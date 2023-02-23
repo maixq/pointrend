@@ -142,14 +142,15 @@ def main(args):
     trainer.resume_or_load(resume=args.resume)
     return trainer.train()
 
-
 if __name__ == "__main__":
+    from register_dataset import register_damage_detection
+    
     args = default_argument_parser().parse_args()
     print("Command Line Args:", args)
     
-    from register_dataset import register_damage_detection
-    
-    register_damage_detection()
+    runname = args.config_file.split('/')[4]
+    print('RUN NAME: ', runname)
+    register_damage_detection(runname)
 
     launch(
         main,
