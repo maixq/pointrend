@@ -5,4 +5,5 @@ aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS
 docker build \
 --file ./docker/Dockerfile \
 --tag pointrend \
-.
+. &&\
+docker image prune -f
