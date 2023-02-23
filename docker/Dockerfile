@@ -13,11 +13,19 @@ RUN pip install -r requirements.txt &&\
 pip install 'git+https://github.com/facebookresearch/fvcore' &&\
 pip install 'git+https://github.com/facebookresearch/detectron2.git'
 
+# This will by default build detectron2 for all common cuda architectures and take a lot more time,
+# because inside `docker build`, there is no way to tell which architecture will be used.
+ARG TORCH_CUDA_ARCH_LIST="Kepler;Kepler+Tesla;Maxwell;Maxwell+Tegra;Pascal;Volta;Turing"
+ENV TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST}" \
+# set FORCE_CUDA because during `docker build` cuda is not accessible
+FORCE_CUDA="1"
+
 ENV PYTHONUNBUFFERED=TRUE \
     PYTHONDONTWRITEBYTECODE=TRUE \
-    # nvidia-runtime ENV configurations from: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/user guide.html
+# nvidia-runtime ENV configurations from: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/user guide.html
     NVIDIA_VISIBLE_DEVICES=all \
     NVIDIA_DRIVER_CAPABILITIES=compute,utility
+
 
 COPY ./train_net.py /pointrend/train_net.py
 COPY ./register_dataset.py /pointrend/register_dataset.py
@@ -25,11 +33,8 @@ COPY ./configs/damage_detection_data_batch_1/Base-RCNN-FPN.yaml /pointrend/confi
 COPY ./configs/damage_detection_data_batch_1/Base-PointRend-RCNN-FPN.yaml /pointrend/configs/Base-PointRend-RCNN-FPN.yaml
 
 WORKDIR /pointrend
-RUN mkdir data/
+RUN mkdir data/ 
 
-ENTRYPOINT ["python", "train_net.py", "--config-file"]
-
-CMD ["data/dent/run1/configs/pointrend_rcnn_R_50_FPN_1x_coco.yaml"]
-
-
+ENTRYPOINT ["python", "train_net.py"]
+CMD ["--config-file", "/pointrend/data/dent/run2/configs/pointrend_rcnn_R_50_FPN_1x_coco.yaml"]
 
