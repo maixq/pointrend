@@ -148,7 +148,7 @@ if __name__ == "__main__":
     args = default_argument_parser().parse_args()
     print("Command Line Args:", args)
     
-    runname = args.config_file.split('/')[4]
+    runname = args.config_file.split('/')[3]
     print('RUN NAME: ', runname)
     register_damage_detection(runname)
 
