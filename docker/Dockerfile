@@ -34,6 +34,4 @@ COPY ./configs /pointrend/configs/
 WORKDIR /pointrend
 RUN mkdir data/ 
 
-ENTRYPOINT ["python", "train_net.py", "--config-file"]
-CMD ["/pointrend/data/dent_run1/configs/pointrend_rcnn_R_50_FPN_1x_coco.yaml"]
-
+ENTRYPOINT ["python", "train_net.py"]
