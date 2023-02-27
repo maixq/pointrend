@@ -58,18 +58,20 @@ SOLVER:
 
 ```
 IMAGE=pointrend
-RUN=dent_run1
+CONTAINER_NAME={container_name}
+RUN={runname} e.g dent_run1
+CONFIG=/pointrend/data/$RUN/configs/pointrend_rcnn_R_50_FPN_1x_coco.yaml
 
 docker run \
 --interactive \
---name pointrend-container \
 -v $(pwd)/data:/pointrend/data \
 --runtime=nvidia \
 --shm-size 8G \
 --gpus all \
-$IMAGE 
---config-file /pointrend/data/$RUN/configs/pointrend_rcnn_R_50_FPN_1x_coco.yaml \
-# --eval-only
+--config-file \
+$CONFIG \
+--eval-only \
+MODEL.WEIGHTS $MODEL_WEIGHTS
 # --resume
 ```
 3. Run docker image to build container 
@@ -80,6 +82,6 @@ $IMAGE
 bash docker/run_local.sh
 ```
 
-4. Check the weights of the model in the output folder
+4. The weights and log file of the model are placed in ./data/{runname}/output
 
 
