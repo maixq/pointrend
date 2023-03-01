@@ -27,9 +27,7 @@ ENV TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST}" \
     NVIDIA_VISIBLE_DEVICES=all \
     NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
-COPY ./train_net.py /pointrend/train_net.py
-COPY ./register_dataset.py /pointrend/register_dataset.py
-COPY ./configs /pointrend/configs/
+COPY /src /pointrend
 
 WORKDIR /pointrend
 RUN mkdir data/ 
